@@ -1,23 +1,25 @@
 // Get our dependencies
 var express = require('express');
 var app = express();
-//var mysql = require("mysql");
-//var connection = mysql.createConnection({
-//  host     : process.env.DB_HOST || 'mysql-test.cxrpknmq0hfi.us-west-2.rds.amazonaws.com',
-//  user     : process.env.DB_USER || 'applicationuser',
-//  password : process.env.DB_PASS || 'applicationuser',
-//  database : process.env.DB_NAME || 'movie_db'
-//});
 
-//connection.connect();
+//RDS Aws dbinstance1 configuration
+var mysql = require("mysql");
+var connection = mysql.createConnection({
+  host     : process.env.DB_HOST || 'dbinstance1.c5wjzkwslaaz.sa-east-1.rds.amazonaws.com',
+  user     : process.env.DB_USER || 'admin',
+  password : process.env.DB_PASS || 'Colombia2021*',
+  database : process.env.DB_NAME || 'dbinstance1'
+});
 
-//function getMovies(callback) {    
-//        connection.query("SELECT * FROM movie_db.movies",
-//            function (err, rows) {
-//                callback(err, rows); 
-//            }
-//        );    
-//}
+connection.connect();
+
+function getMovies(callback) {    
+        connection.query("SELECT * FROM movie_db.movies",
+            function (err, rows) {
+                callback(err, rows); 
+            }
+        );    
+}
 
 //Testing endpoint
 app.get('/', function(req, res){
