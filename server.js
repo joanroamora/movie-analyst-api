@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
   user     : process.env.DB_USER || 'admin',
   password : process.env.DB_PASS || 'Colombia2021*',
   database : process.env.DB_NAME || 'nwdatabase1',
-  port:    : 3306
+  port     : 3306
 });
 
 connection.connect();
