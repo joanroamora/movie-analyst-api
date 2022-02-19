@@ -8,7 +8,8 @@ var connection = mysql.createConnection({
   host     : process.env.DB_HOST || 'nwdatabase1.c5wjzkwslaaz.sa-east-1.rds.amazonaws.com',
   user     : process.env.DB_USER || 'admin',
   password : process.env.DB_PASS || 'Colombia2021*',
-  database : process.env.DB_NAME || 'nwdatabase1'
+  database : process.env.DB_NAME || 'nwdatabase1',
+  port:    : 3306
 });
 
 connection.connect();
