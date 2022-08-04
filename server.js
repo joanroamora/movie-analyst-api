@@ -5,10 +5,10 @@ var app = express();
 //RDS Aws dbinstance1 configuration
 var mysql = require("mysql");
 var connection = mysql.createConnection({
-  host     : process.env.DB_HOST || 'moviedb-rds.c5wjzkwslaaz.sa-east-1.rds.amazonaws.com',
-  user     : process.env.DB_USER || 'admin',
-  password : process.env.DB_PASS || 'Colombia2021*',
-  database : process.env.DB_NAME || 'movie_db',
+  host     : process.env.DB_HOST,
+  user     : process.env.DB_USER,
+  password : process.env.DB_PASS,
+  database : process.env.DB_NAME,
   port     : 3306
 });
 
