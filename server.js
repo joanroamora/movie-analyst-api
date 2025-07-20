@@ -1,94 +1,134 @@
-// Get our dependencies
-var express = require('express');
-var app = express();
-//var mysql = require("mysql");
-//var connection = mysql.createConnection({
-//  host     : process.env.DB_HOST || 'mysql-test.cxrpknmq0hfi.us-west-2.rds.amazonaws.com',
-//  user     : process.env.DB_USER || 'applicationuser',
-//  password : process.env.DB_PASS || 'applicationuser',
-//  database : process.env.DB_NAME || 'movie_db'
-//});
+// app.js
 
-//connection.connect();
+// ----------------------------------------
+// 1. Importar dependencias
+// ----------------------------------------
+const express = require('express');
+const mysql = require('mysql');
 
-//function getMovies(callback) {    
-//        connection.query("SELECT * FROM movie_db.movies",
-//            function (err, rows) {
-//                callback(err, rows); 
-//            }
-//        );    
-//}
+// ----------------------------------------
+// 2. Configurar la conexión a MySQL
+// ----------------------------------------
+const connection = mysql.createConnection({
+  host     : '172.31.81.27',   // IP del servidor MySQL
+  port     : 3306,             // Puerto estándar MySQL
+  user     : 'usuario',        // Usuario remoto
+  password : 'usuario',        // Contraseña del usuario remoto
+  database : 'movie_db'        // Nombre de la base de datos
+});
 
-//Testing endpoint
-app.get('/', function(req, res){
-  var response = [{response : 'hello'}, {code : '200'}]
-  res.json(response);
-})
+connection.connect(err => {
+  if (err) {
+    console.error('Error al conectar a MySQL:', err);
+    process.exit(1);
+  }
+  console.log('✔ Conectado a MySQL en 172.31.81.27:3306');
+});
 
-// Implement the movies API endpoint
-app.get('/movies', function(req, res){
-  var movies = [
-    {title : 'Suicide Squad', release: '2016', score: 8, reviewer: 'Robert Smith', publication : 'The Daily Reviewer'},    
-    {title : 'Batman vs. Superman', release : '2016', score: 6, reviewer: 'Chris Harris', publication : 'International Movie Critic'},
-    {title : 'Captain America: Civil War', release: '2016', score: 9, reviewer: 'Janet Garcia', publication : 'MoviesNow'},
-    {title : 'Deadpool', release: '2016', score: 9, reviewer: 'Andrew West', publication : 'MyNextReview'},
-    {title : 'Avengers: Age of Ultron', release : '2015', score: 7, reviewer: 'Mindy Lee', publication: 'Movies n\' Games'},
-    {title : 'Ant-Man', release: '2015', score: 8, reviewer: 'Martin Thomas', publication : 'TheOne'},
-    {title : 'Guardians of the Galaxy', release : '2014', score: 10, reviewer: 'Anthony Miller', publication : 'ComicBookHero.com'},
-  ]
+// ----------------------------------------
+// 3. Inicializar Express
+// ----------------------------------------
+const app = express();
 
-  res.json(movies);
-})
+// Endpoint de prueba
+app.get('/', (req, res) => {
+  res.json([{ response: 'hello' }, { code: '200' }]);
+});
 
-//app.get('/', function(req, res, next) {   
-    //now you can call the get-driver, passing a callback function
-//    getMovies(function (err, moviesResult){ 
-       //you might want to do something is err is not null...      
-//       res.json(moviesResult);
+// ----------------------------------------
+// 4. Endpoints que usan la base de datos
+// ----------------------------------------
 
-//    });
-//});
+// 4.1 Obtener todas las películas
+app.get('/movies', (req, res) => {
+  const sql = `
+    SELECT 
+      m.title, 
+      m.\`release\`, 
+      m.score,
+      r.name   AS reviewer, 
+      p.name   AS publication
+    FROM moviereview m
+    JOIN reviewer r ON m.reviewer = r.name
+    JOIN publication p ON r.publication = p.name;
+  `;
 
-// Implement the reviewers API endpoint
-app.get('/reviewers', function(req, res){
-  var authors = [
-    {name : 'Robert Smith', publication : 'The Daily Reviewer', avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/angelcolberg/128.jpg'},
-    {name: 'Chris Harris', publication : 'International Movie Critic', avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/bungiwan/128.jpg'},
-    {name: 'Janet Garcia', publication : 'MoviesNow', avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/grrr_nl/128.jpg'},
-    {name: 'Andrew West', publication : 'MyNextReview', avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/d00maz/128.jpg'},
-    {name: 'Mindy Lee', publication: 'Movies n\' Games', avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/laurengray/128.jpg'},
-    {name: 'Martin Thomas', publication : 'TheOne', avatar : 'https://s3.amazonaws.com/uifaces/faces/twitter/karsh/128.jpg'},
-    {name: 'Anthony Miller', publication : 'ComicBookHero.com', avatar : 'https://s3.amazonaws.com/uifaces/faces/twitter/9lessons/128.jpg'}
-  ];
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching movies:', err);
+      return res.status(500).json({ error: 'Error interno al obtener películas' });
+    }
+    res.json(results);
+  });
+});
 
-  res.json(authors);
-})
+// 4.2 Obtener todos los revisores
+app.get('/reviewers', (req, res) => {
+  const sql = `SELECT name, avatar, publication FROM reviewer;`;
 
-// Implement the publications API endpoint
-app.get('/publications', function(req, res){
-  var publications = [
-    {name : 'The Daily Reviewer', avatar: 'glyphicon-eye-open'},
-    {name : 'International Movie Critic', avatar: 'glyphicon-fire'},
-    {name : 'MoviesNow', avatar: 'glyphicon-time'},
-    {name : 'MyNextReview', avatar: 'glyphicon-record'},
-    {name : 'Movies n\' Games', avatar: 'glyphicon-heart-empty'},
-    {name : 'TheOne', avatar : 'glyphicon-globe'},
-    {name : 'ComicBookHero.com', avatar : 'glyphicon-flash'}
-  ];
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching reviewers:', err);
+      return res.status(500).json({ error: 'Error interno al obtener revisores' });
+    }
+    res.json(results);
+  });
+});
 
-  res.json(publications);
-})
+// 4.3 Obtener todas las publicaciones
+app.get('/publications', (req, res) => {
+  const sql = `SELECT name, avatar FROM publication;`;
 
-// Implement the pending reviews API endpoint
-app.get('/pending', function(req, res){
-  var pending = [
-    {title : 'Superman: Homecoming', release: '2017', score: 10, reviewer: 'Chris Harris', publication: 'International Movie Critic'},
-    {title : 'Wonder Woman', release: '2017', score: 8, reviewer: 'Martin Thomas', publication : 'TheOne'},
-    {title : 'Doctor Strange', release : '2016', score: 7, reviewer: 'Anthony Miller', publication : 'ComicBookHero.com'}
-  ]
-  res.json(pending);
-})
-console.log("server listening through port: "+process.env.PORT);
-// Launch our API Server and have it listen on port 3000.
-app.listen(process.env.PORT || 3000);
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching publications:', err);
+      return res.status(500).json({ error: 'Error interno al obtener publicaciones' });
+    }
+    res.json(results);
+  });
+});
+
+// 4.4 Obtener reviews "pendientes" (ejemplo: score >=8 <10)
+app.get('/pending', (req, res) => {
+  const sql = `
+    SELECT 
+      m.title, 
+      m.\`release\`, 
+      m.score,
+      r.name AS reviewer, 
+      p.name AS publication
+    FROM moviereview m
+    JOIN reviewer r ON m.reviewer = r.name
+    JOIN publication p ON r.publication = p.name
+    WHERE m.score >= 8 AND m.score < 10;
+  `;
+
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching pending reviews:', err);
+      return res.status(500).json({ error: 'Error interno al obtener pendientes' });
+    }
+    res.json(results);
+  });
+});
+
+// ----------------------------------------
+// 5. Arrancar el servidor
+// ----------------------------------------
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server listening on port ${PORT}`);
+});
+
+// ----------------------------------------
+// 6. Cerrar conexión limpia al terminar
+// ----------------------------------------
+process.on('SIGINT', () => {
+  connection.end(err => {
+    if (err) console.error('Error al cerrar conexión MySQL:', err);
+    else console.log('✔ Conexión MySQL cerrada');
+    process.exit(0);
+  });
+});
+
 module.exports = app;
