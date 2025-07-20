@@ -4,17 +4,26 @@
 // 1. Importar dependencias
 // ----------------------------------------
 const express = require('express');
-const mysql = require('mysql');
+const mysql   = require('mysql');
 
 // ----------------------------------------
-// 2. Configurar la conexión a MySQL
+// 2. Leer la variable de entorno
+// ----------------------------------------
+const dbHost = process.env.DB_HOST;
+if (!dbHost) {
+  console.error('ERROR: La variable de entorno DB_HOST no está definida');
+  process.exit(1);
+}
+
+// ----------------------------------------
+// 3. Configurar la conexión a MySQL
 // ----------------------------------------
 const connection = mysql.createConnection({
-  host     : '172.31.81.27',   // IP del servidor MySQL
+  host     : dbHost,           // Ahora viene de process.env.DB_HOST
   port     : 3306,             // Puerto estándar MySQL
-  user     : 'usuario',        // Usuario remoto
-  password : 'usuario',        // Contraseña del usuario remoto
-  database : 'movie_db'        // Nombre de la base de datos
+  user     : process.env.DB_USER     || 'usuario',   // opcionalmente también desde env
+  password : process.env.DB_PASS     || 'usuario',   // opcionalmente también desde env
+  database : process.env.DB_NAME     || 'movie_db'    // opcionalmente también desde env
 });
 
 connection.connect(err => {
@@ -22,7 +31,7 @@ connection.connect(err => {
     console.error('Error al conectar a MySQL:', err);
     process.exit(1);
   }
-  console.log('✔ Conectado a MySQL en 172.31.81.27:3306');
+  console.log(`✔ Conectado a MySQL en ${dbHost}:3306`);
 });
 
 // ----------------------------------------
