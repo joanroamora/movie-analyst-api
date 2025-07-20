@@ -10,13 +10,16 @@ INSERT INTO movie_db.publication (name, avatar) VALUES ('Movies n\' Games', 'gly
 INSERT INTO movie_db.publication (name, avatar) VALUES ('TheOne', 'glyphicon-globe');
 INSERT INTO movie_db.publication (name, avatar) VALUES ('ComicBookHero.com', 'glyphicon-flash');
 
-INSERT INTO movie_db.reviewer (name, avatar, publication) VALUES ('Robert Smith','https://s3.amazonaws.com/uifaces/faces/twitter/angelcolberg/128.jpg','The Daily Reviewer');
-INSERT INTO movie_db.reviewer (name, avatar, publication) VALUES ('Chris Harris','https://s3.amazonaws.com/uifaces/faces/twitter/bungiwan/128.jpg','International Movie Critic');
-INSERT INTO movie_db.reviewer (name, avatar, publication) VALUES ('Janet Garcia','https://s3.amazonaws.com/uifaces/faces/twitter/grrr_nl/128.jpg','MoviesNow');
-INSERT INTO movie_db.reviewer (name, avatar, publication) VALUES ('Andrew West','https://s3.amazonaws.com/uifaces/faces/twitter/d00maz/128.jpg','MyNextReview');
-INSERT INTO movie_db.reviewer (name, avatar, publication) VALUES ('Mindy Lee','https://s3.amazonaws.com/uifaces/faces/twitter/laurengray/128.jpg','Movies n\' Games');
-INSERT INTO movie_db.reviewer (name, avatar, publication) VALUES ('Martin Thomas','https://s3.amazonaws.com/uifaces/faces/twitter/karsh/128.jpg','TheOne');
-INSERT INTO movie_db.reviewer (name, avatar, publication) VALUES ('Anthony Miller','https://s3.amazonaws.com/uifaces/faces/twitter/9lessons/128.jpg','ComicBookHero.com');
+INSERT INTO movie_db.reviewer (name, avatar, publication)
+VALUES 
+  ('Robert Smith',  'https://i.pravatar.cc/128?img=1', 'The Daily Reviewer'),
+  ('Chris Harris',  'https://i.pravatar.cc/128?img=2', 'International Movie Critic'),
+  ('Janet Garcia',  'https://i.pravatar.cc/128?img=3', 'MoviesNow'),
+  ('Andrew West',   'https://i.pravatar.cc/128?img=4', 'MyNextReview'),
+  ('Mindy Lee',     'https://i.pravatar.cc/128?img=5', 'Movies n\' Games'),
+  ('Martin Thomas', 'https://i.pravatar.cc/128?img=6', 'TheOne'),
+  ('Anthony Miller','https://i.pravatar.cc/128?img=7', 'ComicBookHero.com');
+
 
 INSERT INTO movie_db.moviereview (title, `release`, score, reviewer) VALUES ('Deadpool', '2016', 11, 'Robert Smith');
 INSERT INTO movie_db.moviereview (title, `release`, score, reviewer) VALUES ('Thor: Ragnarok', '2017', 7, 'Chris Harris');
