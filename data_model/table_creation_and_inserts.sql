@@ -17,7 +17,7 @@ VALUES
   ('Janet Garcia',  'https://i.pravatar.cc/128?img=3', 'MoviesNow'),
   ('Andrew West',   'https://i.pravatar.cc/128?img=4', 'MyNextReview'),
   ('Mindy Lee',     'https://i.pravatar.cc/128?img=5', 'Movies n\' Games'),
-  ('Martin Thomas', 'https://i.pravatar.cc/128?img=6', 'TheOne'),
+  ('Martin Thomas', 'https://i.pravatar.cc/128?img=13', 'TheOne'),
   ('Anthony Miller','https://i.pravatar.cc/128?img=7', 'ComicBookHero.com');
 
 
