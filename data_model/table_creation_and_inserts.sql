@@ -16,8 +16,8 @@ VALUES
   ('Chris Harris',  'https://i.pravatar.cc/128?img=2', 'International Movie Critic'),
   ('Janet Garcia',  'https://i.pravatar.cc/128?img=3', 'MoviesNow'),
   ('Andrew West',   'https://i.pravatar.cc/128?img=4', 'MyNextReview'),
-  ('Mindy Lee',     'https://i.pravatar.cc/128?img=5', 'Movies n\' Games'),
-  ('Martin Thomas', 'https://i.pravatar.cc/128?img=13', 'TheOne'),
+  ('Mindy Lee',     'https://i.pravatar.cc/128?img=17', 'Movies n\' Games'),
+  ('Martin Thomas', 'https://i.pravatar.cc/128?img=18', 'TheOne'),
   ('Anthony Miller','https://i.pravatar.cc/128?img=7', 'ComicBookHero.com');
 
 
